@@ -1,5 +1,6 @@
 <template>
     <div>
+        <p>Docker環境確認2回目</p>
         <HelloMessage :name="name" />
         <p>
             <input type="text" v-model="name" />
