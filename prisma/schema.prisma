@@ -23,8 +23,6 @@ model checkout {
   checkout_date DateTime @default(now())
   return_date DateTime 
   
-
-
 }
 
 model user {
@@ -38,7 +36,7 @@ model user {
 
 model approve{
   id      Int      @id @unique @default(autoincrement())
-  user Int
+  user String
   date DateTime 
   checkout checkout?
 }
