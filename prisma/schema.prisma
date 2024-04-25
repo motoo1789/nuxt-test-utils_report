@@ -21,7 +21,7 @@ model checkout {
   approve  Int @unique
   key Int
   checkout_date DateTime @default(now())
-  return_date DateTime 
+  return_date DateTime @default('1970-01-01 00:00:00')
   
 }
 

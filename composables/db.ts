@@ -35,7 +35,25 @@ export async function read(): Promise<any> {
         console.error(error);
     });
 
-    console.log("スプリプト側:Prisma返却値")
+    console.log("readスプリプト側:Prisma返却値")
+    console.log(createUser)    
+
+    return createUser;
+}
+
+export async function checkoutRead(readId: number): Promise<any> {
+    const prisma = new PrismaClient()
+
+    const createUser = await prisma.checkout.findUnique({
+        where: {
+            id: readId
+        }
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+    console.log("checkoutReadスプリプト側:Prisma返却値")
     console.log(createUser)    
 
     return createUser;
