@@ -1,5 +1,7 @@
 import { checkout } from "../../composables/checkout.js"
 import { checkoutRead } from "../../composables/db.js"
+import { approveIdRead } from "../../composables/db.js"
+import { approveInsert } from "../../composables/db.js"
 import { describe, test, expect } from "vitest";
 
 describe("checkout", () => {
@@ -23,15 +25,19 @@ describe("checkout", () => {
 })
 
 describe("approve", () => {
-    test("approve table test", async () => {
-        const approvetest = {
+    test("approve table insert test", async () => {
+        const test = {
             id: 3,
             user: "testauthorizer01",
             status: false,
         }
+        await approveInsert();
+        const result = await approveIdRead();
+
+        expect(result).toMatchObject(test)
+        // expect(result).not.toBeUndefined();
+        // expect(result).toBeUndefined();
     })
 
-    // expect(result).toMatchObject(checkouttest)
-    // expect(result).not.toBeUndefined();
-    // expect(result).toBeUndefined();
+    
 })
