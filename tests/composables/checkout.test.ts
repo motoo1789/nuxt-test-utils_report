@@ -21,3 +21,17 @@ describe("checkout", () => {
         // expect(result).toBeUndefined();
     })
 })
+
+describe("approve", () => {
+    test("approve table test", async () => {
+        const approvetest = {
+            id: 3,
+            user: "testauthorizer01",
+            status: false,
+        }
+    })
+
+    // expect(result).toMatchObject(checkouttest)
+    // expect(result).not.toBeUndefined();
+    // expect(result).toBeUndefined();
+})

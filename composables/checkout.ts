@@ -4,7 +4,6 @@ export async function checkout(): Promise<any> {
     const prisma = new PrismaClient()
 
     const checkout = {
-        id: 2,
         user: 'checkouttest0001',
         approve: 2,
         key: 0,

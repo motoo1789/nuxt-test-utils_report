@@ -21,7 +21,7 @@ model checkout {
   approve  Int @unique
   key Int
   checkout_date DateTime @default(now())
-  return_date DateTime @default('1970-01-01 00:00:00')
+  return_date DateTime @default(now())
   
 }
 
@@ -29,7 +29,7 @@ model user {
   id      String      @id @unique
   name String
   authorizer String
-  create_date DateTime @default(now())
+  create_date DateTime
   mail  String
   checkout checkout?
 }
@@ -37,6 +37,7 @@ model user {
 model approve{
   id      Int      @id @unique @default(autoincrement())
   user String
+  status Boolean @default(false)
   date DateTime 
   checkout checkout?
 }
