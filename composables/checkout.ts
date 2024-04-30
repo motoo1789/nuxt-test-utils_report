@@ -10,15 +10,28 @@ export async function checkout(): Promise<any> {
         checkout_date: new Date(),
         return_date: new Date()
     }
+    
+    const approve = {
+        user: "testauthorizer01",
+        status: true,
+        date: new Date()
+    }
 
-    const createUser = await prisma.checkout.create({
+    const createApprove = await prisma.approve.create({
+        data: approve
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+    const createCheckout = await prisma.checkout.create({
         data: checkout
     })
     .catch((error) => {
         console.error(error);
     });
 
-    return createUser;
+    return createCheckout;
 }
 
 export async function approveIdRead(): Promise<any> {
