@@ -30,6 +30,7 @@
     "vuetify": "^3.5.14"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node prisma/seed.ts",
+    "reset": "ts-node prisma/reset.ts"
   }
 }

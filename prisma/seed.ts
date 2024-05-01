@@ -18,6 +18,13 @@ async function main() {
             create_date: new Date(),
             mail: "test@test.com"
         },
+        {
+            id: "checkouttest0001",
+            name: "test",
+            authorizer: "NotHaveAuthorizer",
+            create_date: new Date(),
+            mail: "test@test.com"
+        }
     ];
     for(const user of users) {
         const result = await prisma.user.create({
