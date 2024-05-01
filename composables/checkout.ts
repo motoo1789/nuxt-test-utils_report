@@ -1,15 +1,8 @@
 import { PrismaClient } from '@prisma/client'
+// import { approveIdRead } from "./db.js"
 
 export async function checkout(): Promise<any> {
     const prisma = new PrismaClient()
-
-    const checkout = {
-        user: 'checkouttest0001',
-        approve: 2,
-        key: 0,
-        checkout_date: new Date(),
-        return_date: new Date()
-    }
     
     const approve = {
         user: "testauthorizer01",
@@ -17,6 +10,7 @@ export async function checkout(): Promise<any> {
         date: new Date()
     }
 
+    // approveのinsert
     const createApprove = await prisma.approve.create({
         data: approve
     })
@@ -24,6 +18,19 @@ export async function checkout(): Promise<any> {
         console.error(error);
     });
 
+    // approveのinsertが失敗していたらフロントにメッセージを返却
+    if(createApprove === null) {
+        return "貸出できません！"
+    }
+
+    console.log(createApprove);
+    const checkout = {
+        user: 'checkouttest0001',
+        approve: createApprove!.id,
+        key: 0,
+        checkout_date: new Date(),
+        return_date: new Date()
+    }
     const createCheckout = await prisma.checkout.create({
         data: checkout
     })

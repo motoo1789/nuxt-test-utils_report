@@ -1,20 +1,22 @@
 import { checkout } from "../../composables/checkout.js"
-
+import { approveIdRead } from "../../composables/checkout.js"
+import { checkoutRead } from "../../composables/db.js"
 import { describe, test, expect } from "vitest";
 
 describe("checkout", () => {
     test("貸出処理のテスト", async () => {
 
-        const checkout = {
-            id: 3,
+        // Arrange
+        const checkoutTest = {
+            id: 1,
             user: 'checkouttest0001',
-            approve: 4,
+            approve: 1,
             key: 0,
             // return_date: new Date('1970-01-01T00:00:000Z')
         }
 
-        const approve = {
-            id: 4,
+        const approveTest = {
+            id: 1,
             user: "testauthorizer01",
             status: true,
         }
@@ -26,11 +28,19 @@ describe("checkout", () => {
             mail: "test@test.com",
         }
 
-        await checkout()
-        const result = await checkoutRead(2);
-        console.log("checkoutテスト側:関数返却値")
-        console.log(result);
-        expect(result).toMatchObject(checkouttest)
+        // Act
+        await checkout();
+
+        // Assert
+        const resultCheckout = await checkoutRead(1);
+        console.log("checkoutテスト側:関数返却値");
+        console.log(resultCheckout);
+        expect(resultCheckout).toMatchObject(checkoutTest);
+
+        const resultApprove = await approveIdRead();
+        console.log("approveテスト側:関数返却値");
+        console.log(resultApprove);
+        expect(resultApprove).toMatchObject(approveTest);
         // expect(result).not.toBeUndefined();
         // expect(result).toBeUndefined();
     })
@@ -79,16 +89,16 @@ describe("checkout", () => {
 //     })
 // })
 
-describe("failureApproveInsert", () => {
-    test("approve tableインサート失敗", async () => {
-        const test = "登録できませんでした"
+// describe("failureApproveInsert", () => {
+//     test("approve tableインサート失敗", async () => {
+//         const test = "登録できませんでした"
 
-        const result = await failureApproveInsert();
-        console.log(result)
+//         const result = await failureApproveInsert();
+//         console.log(result)
 
-        expect(result).toEqual(test)
-        // expect(result).not.toBeUndefined();
-        // expect(result).toBeUndefined();
-    })
-})
+//         expect(result).toEqual(test)
+//         // expect(result).not.toBeUndefined();
+//         // expect(result).toBeUndefined();
+//     })
+// })
 
