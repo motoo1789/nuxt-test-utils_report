@@ -24,4 +24,4 @@ logs
 !.env.example
 
 
-./prisma/migrations
+./prisma/migrations/
