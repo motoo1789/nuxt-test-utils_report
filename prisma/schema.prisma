@@ -15,8 +15,8 @@ datasource db {
 
 model checkout {
   id        Int     @id @default(autoincrement())
-  checkout_user   user @relation(fields: [user], references: [id]) // references `id` of `Profile`
-  user String     @unique // relation scalar field (used in the `@relation` attribute above)
+  user   String 
+  checkout_user user @relation(fields: [user], references: [id]) // references `id` of `Profile`
   checkout_approve approve @relation(fields: [approve], references: [id]) // references `id` of `Profile`
   approve  Int @unique
   key Int
@@ -31,7 +31,7 @@ model user {
   authorizer String
   create_date DateTime
   mail  String
-  checkout checkout?
+  checkout checkout[] 
 }
 
 model approve{
