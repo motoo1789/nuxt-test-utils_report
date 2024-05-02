@@ -21,7 +21,7 @@ async function main() {
         {
             id: "checkouttest0001",
             name: "test",
-            authorizer: "NotHaveAuthorizer",
+            authorizer: "testtesttest0001",
             create_date: new Date(),
             mail: "test@test.com"
         }

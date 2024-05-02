@@ -1,13 +1,23 @@
 import { checkout } from "../../composables/checkout.js"
-import { approveIdRead } from "../../composables/checkout.js"
-import { checkoutRead } from "../../composables/db.js"
+import { approveIdRead } from "../../composables/approve.js"
+import { checkoutIdLastRead } from "../../composables/checkout.js"
 import { describe, test, expect } from "vitest";
 
 describe("checkout", () => {
     test("貸出処理のテスト", async () => {
 
+        // test data
+        const approveTest = {
+            user: "testauthorizer01",
+            status: true,
+            date: new Date()
+        }
+        const user: string = "checkouttest0001";
+        const key: number = 0;
+
+
         // Arrange
-        const checkoutTest = {
+        const checkoutAssert = {
             id: 1,
             user: 'checkouttest0001',
             approve: 1,
@@ -15,9 +25,9 @@ describe("checkout", () => {
             // return_date: new Date('1970-01-01T00:00:000Z')
         }
 
-        const approveTest = {
+        const approveAssert = {
             id: 1,
-            user: "testauthorizer01",
+            user: "testtesttest0001",
             status: true,
         }
 
@@ -29,18 +39,18 @@ describe("checkout", () => {
         }
 
         // Act
-        await checkout();
+        await checkout(user,key);
 
         // Assert
-        const resultCheckout = await checkoutRead(1);
+        const resultCheckout = await checkoutIdLastRead();
         console.log("checkoutテスト側:関数返却値");
         console.log(resultCheckout);
-        expect(resultCheckout).toMatchObject(checkoutTest);
+        expect(resultCheckout).toMatchObject(checkoutAssert);
 
         const resultApprove = await approveIdRead();
         console.log("approveテスト側:関数返却値");
         console.log(resultApprove);
-        expect(resultApprove).toMatchObject(approveTest);
+        expect(resultApprove).toMatchObject(approveAssert);
         // expect(result).not.toBeUndefined();
         // expect(result).toBeUndefined();
     })
