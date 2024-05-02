@@ -16,17 +16,19 @@ describe("checkout", () => {
         const key: number = 0;
 
 
-        // Arrange
+        /**
+         * Arrange
+         */
         const checkoutAssert = {
-            id: 1,
+            id: 5,
             user: 'checkouttest0001',
-            approve: 1,
+            approve: 5,
             key: 0,
             // return_date: new Date('1970-01-01T00:00:000Z')
         }
 
         const approveAssert = {
-            id: 1,
+            id: 5,
             user: "testtesttest0001",
             status: true,
         }
@@ -38,19 +40,28 @@ describe("checkout", () => {
             mail: "test@test.com",
         }
 
-        // Act
+        /**
+         * Act
+         */
         await checkout(user,key);
 
-        // Assert
+        /**
+         * Assert
+         */
         const resultCheckout = await checkoutIdLastRead();
         console.log("checkoutテスト側:関数返却値");
         console.log(resultCheckout);
-        expect(resultCheckout).toMatchObject(checkoutAssert);
+        expect(resultCheckout.id).toEqual(checkoutAssert.id);
+        expect(resultCheckout.user).toEqual(checkoutAssert.user);
+        expect(resultCheckout.approve).toEqual(checkoutAssert.approve);
+        expect(resultCheckout.key).toEqual(checkoutAssert.key);
 
         const resultApprove = await approveIdRead();
         console.log("approveテスト側:関数返却値");
         console.log(resultApprove);
-        expect(resultApprove).toMatchObject(approveAssert);
+        expect(resultApprove.id).toEqual(approveAssert.id);
+        expect(resultApprove.user).toEqual(approveAssert.user);
+        expect(resultApprove.status).toEqual(approveAssert.status);
         // expect(result).not.toBeUndefined();
         // expect(result).toBeUndefined();
     })
