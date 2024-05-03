@@ -20,16 +20,16 @@ describe("checkout", () => {
          * Arrange
          */
         const checkoutAssert = {
-            id: 6,
+            id: 5,
             user: 'checkouttest0001',
-            approve: 6,
+            approve: 5,
             key: 0,
             // return_date: new Date('1970-01-01T00:00:000Z')
         }
 
         const approveAssert = {
-            id: 6,
-            user: "testtesttest0001",
+            id: 5,
+            approver: "testtesttest0001",
             status: true,
         }
 
@@ -43,33 +43,33 @@ describe("checkout", () => {
         /**
          * Act
          */
-        await checkout(user,key);
+        const resultMessage = await checkout(user,key);
 
         /**
          * Assert
          */
+        // approve test
         const resultApprove = await approveIdRead();
-        console.log("approveテスト側:関数返却値");
-        console.log(resultApprove);
         expect(resultApprove.id).toEqual(approveAssert.id);
-        expect(resultApprove.user).toEqual(approveAssert.user);
+        expect(resultApprove.approver).toEqual(approveAssert.approver);
         expect(resultApprove.status).toEqual(approveAssert.status);
 
-
+        // checkout test
         const resultCheckout = await checkoutIdLastRead();
-        console.log("checkoutテスト側:関数返却値");
-        console.log(resultCheckout);
         expect(resultCheckout.id).toEqual(checkoutAssert.id);
         expect(resultCheckout.user).toEqual(checkoutAssert.user);
         // checkoutはapproveと同じはず
         expect(resultApprove.id).toEqual(checkoutAssert.approve);
         expect(resultCheckout.key).toEqual(checkoutAssert.key);
 
+        // message test
+        expect(resultMessage).toEqual("貸出処理が完了しました");
+
 
         // expect(result).not.toBeUndefined();
         // expect(result).toBeUndefined();
-    })
-    test("approveにinsertしたいユーザーがuserテーブルにいなかった時 異常テスト", async () => {
+    });
+    test("approveにinsertしたいユーザーがuserテーブルにいなかった時 失敗テスト", async () => {
 
         /**
          * Arrange
@@ -81,7 +81,7 @@ describe("checkout", () => {
         /**
          * Act
          */
-        const result = await checkout(user,key);
+        const resultMessage = await checkout(user,key);
 
         /**
          * Assert
@@ -89,13 +89,11 @@ describe("checkout", () => {
         const resultApprove = await approveIdRead();
         console.log("approveテスト側:関数返却値");
         console.log(resultApprove);
-        expect(result).toEqual("承認者が存在しないので貸出できません");
-
-
+        expect(resultMessage).toEqual("ユーザーが存在しないので貸出できません");
 
         // expect(result).not.toBeUndefined();
         // expect(result).toBeUndefined();
-    })
+    });
 })
 
 // describe("approve", () => {

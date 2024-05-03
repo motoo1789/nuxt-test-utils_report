@@ -1,24 +1,31 @@
 import { PrismaClient } from '@prisma/client'
-import { findApprove, approveInsert } from "./approve.js"
+import { findApprove, createApprove } from "./approve.js"
+import { findUser  } from "./user.js"
 // import { approveIdRead } from "./db.js"
 const prisma = new PrismaClient()
 
+
+
 export async function checkout(user: string, key: number): Promise<any> {
 
-    // user idからauthorizerを取得する
-    const approveUser: string = await findApprove(user);
-
-    // approveのinsert
-    const createApprove = await approveInsert(approveUser,true);
-
-    // approveのinsertが失敗していたらフロントにメッセージを返却
-    if(createApprove === null) {
-        return "承認者が存在しないので貸出できません"
+    // user idからauthorizerを取得する、いなければエラーメッセージを返却
+    const existUser : { id: string } | null = await findUser(user);
+    if(existUser === null) {
+        return "ユーザーが存在しないので貸出できません"
     }
 
-    const createdCheckout = await createCheckout(user, createApprove!.id, key);
+    // approveのinsert
+    const approver : { approver: string } = await findApprove();
+    const createApproveResult = await createApprove(existUser.id,true);
+
+    // approveのinsertが失敗していたらメッセージを返却
+    if(createApproveResult === null) {
+        return "貸出処理でエラーが発生しました"
+    }
+
+    const createdCheckout = await createCheckout(user, createApproveResult!.id, key);
     
-    return createdCheckout;
+    return createdCheckout ?? "貸出処理でエラーが発生しました";
 }
 
 async function createCheckout(user: string, approve: number, key: number) :  Promise<any> {
@@ -36,7 +43,7 @@ async function createCheckout(user: string, approve: number, key: number) :  Pro
         console.error(error);
     });
 
-    return createCheckout ?? "貸出できません";
+    return createCheckout === null ? "貸出処理でエラーが発生しました" : "貸出処理が完了しました";
 }
 
 export async function checkoutIdRead(readId: number): Promise<any> {
