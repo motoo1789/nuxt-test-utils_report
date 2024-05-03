@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
 
 export async function approveIdRead(): Promise<any> {
-    const prisma = new PrismaClient()
 
     const result = await prisma.approve.findFirst({
         orderBy: {
@@ -19,8 +19,6 @@ export async function approveIdRead(): Promise<any> {
 }
 
 export async function findApprove(user: string): Promise<any> {
-    const prisma = new PrismaClient()
-
 
     const result = await prisma.user.findUnique({
         where: {
@@ -34,30 +32,23 @@ export async function findApprove(user: string): Promise<any> {
     return result?.authorizer ?? "登録できませんでした";
 }
 
-// export async function approveInsert(): Promise<any> {
-//     const prisma = new PrismaClient()
+export async function approveInsert(user: string, status: boolean): Promise<any> {
 
-//     const user = {
-//         user: 'testauthorizer01',
-//         status: false,
-//         date: new Date(),
-//     }
+    const createUser = await prisma.approve.create({
+        data: {
+            user: user,
+            status: status,
+            date: new Date()
+        }
+    })
+    .catch((error) => {
+        console.error(error);
+    });
 
-//     const createUser = await prisma.approve.create({
-//         data: user
-//     })
-//     .catch((error) => {
-//         console.error(error);
-//     });
-
-//     console.log("スプリプト側:approveInsert返却値")
-//     console.log(createUser)    
-
-//     return createUser;
-// }
+    return createUser ?? "登録できませんでした";
+}
 
 // export async function failureApproveInsert(): Promise<any> {
-//     const prisma = new PrismaClient()
 
 //     const user = {
 //         id: 1,

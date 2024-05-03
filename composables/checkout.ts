@@ -1,51 +1,45 @@
 import { PrismaClient } from '@prisma/client'
-import { findApprove } from "./approve.js"
+import { findApprove, approveInsert } from "./approve.js"
 // import { approveIdRead } from "./db.js"
+const prisma = new PrismaClient()
 
 export async function checkout(user: string, key: number): Promise<any> {
-    const prisma = new PrismaClient()
 
     // user idからauthorizerを取得する
     const approveUser: string = await findApprove(user);
 
     // approveのinsert
-    const createApprove = await prisma.approve.create({
+    const createApprove = await approveInsert(approveUser,true);
+
+    // approveのinsertが失敗していたらフロントにメッセージを返却
+    if(createApprove === null) {
+        return "承認者が存在しないので貸出できません"
+    }
+
+    const createdCheckout = await createCheckout(user, createApprove!.id, key);
+    
+    return createdCheckout;
+}
+
+async function createCheckout(user: string, approve: number, key: number) :  Promise<any> {
+
+    const createCheckout = await prisma.checkout.create({
         data: {
-            user: approveUser,
-            status: true,
-            date: new Date()
+            user: user,
+            approve:approve,
+            key: key,
+            checkout_date: new Date(),
+            return_date: new Date()
         }
     })
     .catch((error) => {
         console.error(error);
     });
 
-    // approveのinsertが失敗していたらフロントにメッセージを返却
-    if(createApprove === null) {
-        return "貸出できません！"
-    }
-
-    console.log(createApprove);
-    const checkout = {
-        user: user,
-        approve: createApprove!.id,
-        key: key,
-        checkout_date: new Date(),
-        return_date: new Date()
-    }
-    const createCheckout = await prisma.checkout.create({
-        data: checkout
-    })
-    .catch((error) => {
-        console.error(error);
-    });
-
-    return createCheckout;
+    return createCheckout ?? "貸出できません";
 }
 
-
 export async function checkoutIdRead(readId: number): Promise<any> {
-    const prisma = new PrismaClient()
 
     const createUser = await prisma.checkout.findUnique({
         where: {
@@ -63,7 +57,6 @@ export async function checkoutIdRead(readId: number): Promise<any> {
 }
 
 export async function checkoutIdLastRead(): Promise<any> {
-    const prisma = new PrismaClient()
 
     const createUser = await prisma.checkout.findFirst({
         orderBy: {
