@@ -1,31 +1,16 @@
 import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
 
-// export async function userRead(): Promise<any> {
-//     const prisma = new PrismaClient()
+export async function findUser(user: string): Promise<any> {
 
-//     const createUser = await prisma.user.findUnique({
-//         where: {
-//             id: "checkouttest0001"
-//         }
-//     })
-//     .catch((error) => {
-//         console.error(error);
-//     });  
+    const result = await prisma.user.findUnique({
+        where: {
+            id: user
+        }
+    })
+    .catch((error) => {
+        console.error(error);
+    });  
 
-//     return createUser;
-// }
-
-// export async function notUser(): Promise<any> {
-//     const prisma = new PrismaClient()
-
-//     const createUser = await prisma.user.findUnique({
-//         where: {
-//             id: "not user"
-//         }
-//     })
-//     .catch((error) => {
-//         console.error(error);
-//     });  
-
-//     return createUser ?? "ユーザーが確認できませんでした";
-// }
+    return result ?? null;
+}

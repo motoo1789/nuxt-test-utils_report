@@ -1,24 +1,39 @@
 import { PrismaClient } from '@prisma/client'
-import { findApprove, approveInsert } from "./approve.js"
+import { createApprove } from "./approve.js"
+import { findUser } from "./user.js"
 // import { approveIdRead } from "./db.js"
 const prisma = new PrismaClient()
 
+
+
 export async function checkout(user: string, key: number): Promise<any> {
 
-    // user idからauthorizerを取得する
-    const approveUser: string = await findApprove(user);
-
-    // approveのinsert
-    const createApprove = await approveInsert(approveUser,true);
-
-    // approveのinsertが失敗していたらフロントにメッセージを返却
-    if(createApprove === null) {
-        return "承認者が存在しないので貸出できません"
+    // user idが登録されているかを取得する、いなければエラーメッセージを返却
+    const existUser : { id: string, approver: string } | null = await findUser(user);
+    if(existUser === null) {
+        return "ユーザーが存在しないので貸出できません"
     }
 
-    const createdCheckout = await createCheckout(user, createApprove!.id, key);
+    // 貸出申請者の承認者をuserから取得し、内容によって承認ステータスを変更
+    let approveStatus : boolean = false;
+    if(existUser.approver === "NoApprover" || existUser.approver === null) 
+    {
+        approveStatus = true;
+    }
+
+    // approveのinsert、失敗していたらメッセージを返却
+
+    const createApproveResult = await createApprove(existUser.approver, approveStatus);
+    if(createApproveResult === null) {
+        return "貸出処理でエラーが発生しました"
+    }
+    console.log("エラー");
+    console.log(createApproveResult);
+
+    // checkoutに貸出レコードを追加
+    const createdCheckout = await createCheckout(user, createApproveResult!.id, key);
     
-    return createdCheckout;
+    return createdCheckout ?? "貸出処理でエラーが発生しました";
 }
 
 async function createCheckout(user: string, approve: number, key: number) :  Promise<any> {
@@ -36,7 +51,7 @@ async function createCheckout(user: string, approve: number, key: number) :  Pro
         console.error(error);
     });
 
-    return createCheckout ?? "貸出できません";
+    return createCheckout === null ? "貸出処理でエラーが発生しました" : "貸出処理が完了しました";
 }
 
 export async function checkoutIdRead(readId: number): Promise<any> {
@@ -70,5 +85,5 @@ export async function checkoutIdLastRead(): Promise<any> {
     console.log("checkoutReadスプリプト側:Prisma返却値")
     console.log(createUser)    
 
-    return createUser;
+    return createUser ?? null;
 }

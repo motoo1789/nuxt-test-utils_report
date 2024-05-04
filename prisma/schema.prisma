@@ -28,15 +28,15 @@ model checkout {
 model user {
   id      String      @id @unique
   name String
-  authorizer String
+  approver String
   create_date DateTime
   mail  String
-  checkout checkout[] 
+  checkout checkout[]
 }
 
 model approve{
   id      Int      @id @unique @default(autoincrement())
-  user String
+  approver String
   status Boolean @default(false)
   date DateTime 
   checkout checkout?
