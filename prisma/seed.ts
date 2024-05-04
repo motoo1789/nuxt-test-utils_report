@@ -7,21 +7,21 @@ async function main() {
         {
             id: "testtesttest0001",
             name: "test",
-            authorizer: "NotHaveAuthorizer",
+            approver: "NoApprover",
             create_date: new Date(),
             mail: "test@test.com"
         },
         {
             id: "testtesttest0002",
             name: "test",
-            authorizer: "testtesttest0001",
+            approver: "testtesttest0001",
             create_date: new Date(),
             mail: "test@test.com"
         },
         {
             id: "checkouttest0001",
             name: "test",
-            authorizer: "testtesttest0001",
+            approver: "testtesttest0001",
             create_date: new Date(),
             mail: "test@test.com"
         }

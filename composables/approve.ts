@@ -32,11 +32,11 @@ export async function findApprove(user: string): Promise<any> {
     return result?.authorizer ?? null;
 }
 
-export async function createApprove(user: string, status: boolean): Promise<any> {
+export async function createApprove(approver: string, status: boolean): Promise<any> {
 
     const createUser = await prisma.approve.create({
         data: {
-            approver: user,
+            approver: approver,
             status: status,
             date: new Date()
         }
@@ -47,22 +47,3 @@ export async function createApprove(user: string, status: boolean): Promise<any>
 
     return createUser ?? null;
 }
-
-// export async function failureApproveInsert(): Promise<any> {
-
-//     const user = {
-//         id: 1,
-//         user: 'testauthorizer01',
-//         status: false,
-//         date: new Date(),
-//     }
-
-//     const createUser = await prisma.approve.create({
-//         data: user
-//     })
-//     .catch((error) => {
-//         console.error(error);
-//     });  
-
-//     return createUser ?? "登録できませんでした";
-// }

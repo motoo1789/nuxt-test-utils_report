@@ -7,11 +7,6 @@ describe("checkout", () => {
     test("貸出処理の正常テスト", async () => {
 
         // test data
-        const approveTest = {
-            user: "testauthorizer01",
-            status: true,
-            date: new Date()
-        }
         const user: string = "checkouttest0001";
         const key: number = 0;
 
@@ -20,23 +15,23 @@ describe("checkout", () => {
          * Arrange
          */
         const checkoutAssert = {
-            id: 5,
+            id: 2,
             user: 'checkouttest0001',
-            approve: 5,
+            approve: 2,
             key: 0,
             // return_date: new Date('1970-01-01T00:00:000Z')
         }
 
         const approveAssert = {
-            id: 5,
+            id: 2,
             approver: "testtesttest0001",
-            status: true,
+            status: false,
         }
 
         const userApprove = {
             id: "testauthorizer01",
             name: "テスト承認者",
-            authorizer: "testauthorizer01",
+            approver: "testauthorizer01",
             mail: "test@test.com",
         }
 
@@ -96,48 +91,6 @@ describe("checkout", () => {
     });
 })
 
-// describe("approve", () => {
-//     test("approve table insert test", async () => {
-//         const test = {
-//             id: 3,
-//             user: "testauthorizer01",
-//             status: false,
-//         }
-//         await approveInsert();
-//         const result = await approveIdRead();
-
-//         expect(result).toMatchObject(test)
-//         // expect(result).not.toBeUndefined();
-//         // expect(result).toBeUndefined();
-//     })
-// })
-
-// describe("exituser", () => {
-//     test("ユーザーが存在するかのテスト", async () => {
-//         const test = {
-//             id: "checkouttest0001",
-//         }
-
-//         const result = await userRead();
-
-//         expect(result).toMatchObject(test)
-//         // expect(result).not.toBeUndefined();
-//         // expect(result).toBeUndefined();
-//     })
-// })
-
-// describe("notExituser", () => {
-//     test("ユーザーが存在しないときのテスト", async () => {
-//         const test = "ユーザーが確認できませんでした"
-
-//         const result = await notUser();
-//         console.log(result)
-
-//         expect(result).toEqual(test)
-//         // expect(result).not.toBeUndefined();
-//         // expect(result).toBeUndefined();
-//     })
-// })
 
 // describe("failureApproveInsert", () => {
 //     test("approve tableインサート失敗", async () => {
