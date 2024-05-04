@@ -22,13 +22,10 @@ export async function checkout(user: string, key: number): Promise<any> {
     }
 
     // approveのinsert、失敗していたらメッセージを返却
-
     const createApproveResult = await createApprove(existUser.approver, approveStatus);
     if(createApproveResult === null) {
         return "貸出処理でエラーが発生しました"
     }
-    console.log("エラー");
-    console.log(createApproveResult);
 
     // checkoutに貸出レコードを追加
     const createdCheckout = await createCheckout(user, createApproveResult!.id, key);
@@ -65,9 +62,6 @@ export async function checkoutIdRead(readId: number): Promise<any> {
         console.error(error);
     });
 
-    console.log("checkoutReadスプリプト側:Prisma返却値")
-    console.log(createUser)    
-
     return createUser;
 }
 
@@ -81,9 +75,6 @@ export async function checkoutIdLastRead(): Promise<any> {
     .catch((error) => {
         console.error(error);
     });
-
-    console.log("checkoutReadスプリプト側:Prisma返却値")
-    console.log(createUser)    
 
     return createUser ?? null;
 }
