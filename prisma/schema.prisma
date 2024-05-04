@@ -32,13 +32,11 @@ model user {
   create_date DateTime
   mail  String
   checkout checkout[]
-  approve approve[]
 }
 
 model approve{
   id      Int      @id @unique @default(autoincrement())
   approver String
-  approve_user user @relation(fields: [approver], references: [id]) // references `id` of `Profile`
   status Boolean @default(false)
   date DateTime 
   checkout checkout?

@@ -16,16 +16,19 @@ export async function checkout(user: string, key: number): Promise<any> {
 
     // 貸出申請者の承認者をuserから取得し、内容によって承認ステータスを変更
     let approveStatus : boolean = false;
-    if(existUser.approver === "NotExistUser" || existUser.approver === null) 
+    if(existUser.approver === "NoApprover" || existUser.approver === null) 
     {
         approveStatus = true;
     }
 
     // approveのinsert、失敗していたらメッセージを返却
+
     const createApproveResult = await createApprove(existUser.approver, approveStatus);
     if(createApproveResult === null) {
         return "貸出処理でエラーが発生しました"
     }
+    console.log("エラー");
+    console.log(createApproveResult);
 
     // checkoutに貸出レコードを追加
     const createdCheckout = await createCheckout(user, createApproveResult!.id, key);
@@ -82,5 +85,5 @@ export async function checkoutIdLastRead(): Promise<any> {
     console.log("checkoutReadスプリプト側:Prisma返却値")
     console.log(createUser)    
 
-    return createUser;
+    return createUser ?? null;
 }
