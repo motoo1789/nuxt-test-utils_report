@@ -41,26 +41,6 @@ export async function read(): Promise<any> {
     return createUser;
 }
 
-
-
-export async function approveIdRead(): Promise<any> {
-    const prisma = new PrismaClient()
-
-    const result = await prisma.approve.findFirst({
-        orderBy: {
-            id: "desc",
-        }
-    })
-    .catch((error) => {
-        console.error(error);
-    });
-
-    console.log("approveIdReadスプリプト側:Prisma返却値")
-    console.log(result)    
-
-    return result;
-}
-
 export async function approveInsert(): Promise<any> {
     const prisma = new PrismaClient()
 
