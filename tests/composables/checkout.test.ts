@@ -5,9 +5,8 @@ import { describe, test, expect } from "vitest";
 
 describe("checkout", async () => {
     const checkoutLastIdObj : { id : number } = await checkoutIdLastRead();
-    console.log(checkoutLastIdObj?.id);
-    console.log(checkoutLastIdObj?.id);
     const id = checkoutLastIdObj === null ? 1 : checkoutLastIdObj?.id + 1;
+
     test("貸出処理の正常テスト 貸出ステータス false", async () => {
 
         // test data
@@ -71,8 +70,6 @@ describe("checkout", async () => {
         /**
          * Arrange
          */
-        console.log("idの確認");
-        console.log(id + 1);
         const checkoutAssert = {
             id: id + 1,
             user: 'testtesttest0001',
@@ -80,8 +77,6 @@ describe("checkout", async () => {
             key: 0,
             // return_date: new Date('1970-01-01T00:00:000Z')
         }
-        console.log("checkoutAssertの確認");
-        console.log(checkoutAssert);
 
         const approveAssert = {
             id: id + 1,
