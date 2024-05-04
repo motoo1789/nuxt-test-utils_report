@@ -1,5 +1,4 @@
-import { approveInsert } from "../../composables/approve.js"
-
+import { createApprove } from "../../composables/approve.js"
 import { describe, test, expect } from "vitest";
 
 describe("approve", () => {
@@ -15,7 +14,7 @@ describe("approve", () => {
         /**
          * Act
          */
-        const result = await approveInsert(user,isReturn);
+        const result = await createApprove(user,isReturn);
 
         /**
          * Assert
@@ -38,7 +37,7 @@ describe("approve", () => {
         /**
          * Act
          */
-        const result = await approveInsert(2,true);
+        const result = await createApprove(2,true);
 
         /**
          * Assert

@@ -10,10 +10,7 @@ export async function approveIdRead(): Promise<any> {
     })
     .catch((error) => {
         console.error(error);
-    });
-
-    console.log("approveIdReadスプリプト側:Prisma返却値")
-    console.log(result)    
+    });  
 
     return result;
 }
