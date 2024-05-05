@@ -23,24 +23,26 @@
                 <v-container>
                     <v-row>
                         <v-col cols="6">
-                            <v-card
-                            class="mx-auto"
-                            height="200"
-                            image="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-                            max-width="200"
-                            theme="dark"
-                            title="Card title"
-                        ></v-card>
+                            <v-card 
+                                class="mx-auto keyType1"
+                                height="200"
+                                image="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                                max-width="200"
+                                theme="dark"
+                                title="keyType1"
+                                onclick="checkout(0)"
+                            ></v-card>
                         </v-col>
                         <v-col  cols="6">
                             <v-card
-                            class="mx-auto"
-                            height="200"
-                            image="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-                            max-width="200"
-                            theme="dark"
-                            title="Card title"
-                        ></v-card>
+                                class="mx-auto keyType1"
+                                height="200"
+                                image="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                                max-width="200"
+                                theme="dark"
+                                title="keyType1"
+                                onclick="checkout(1)"
+                            ></v-card>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -93,6 +95,10 @@
     import { ref } from "vue";
     const name = ref("World");
 
+    // tabs
+    const tab = ref(0);
+    const text = "aaaa";
+
     const registName = ref("");
 
     const desserts = [
@@ -117,7 +123,10 @@
                 { title: '返却日時', value: 'return_date', align: 'end' },
     ];
 
-    // tabs
-    const tab = ref(0);
-    const text = "aaaa";
+    import { checkout } from "../composables/checkout.js"
+    const clickCheckout = (keytype: number) => {
+        checkout("checkouttest0001",keytype);
+    }
+
+
 </script>
