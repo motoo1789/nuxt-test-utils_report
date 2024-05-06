@@ -23,28 +23,39 @@
                 <v-container>
                     <v-row>
                         <v-col cols="6">
-                            <v-card
-                            class="mx-auto"
-                            height="200"
-                            image="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-                            max-width="200"
-                            theme="dark"
-                            title="Card title"
-                        ></v-card>
+                            <v-card 
+                                class="mx-auto keyType1"
+                                height="200"
+                                image="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                                max-width="200"
+                                theme="dark"
+                                title="keyType1"
+                                @click="clickCheckout(0)"
+                            ></v-card>
                         </v-col>
                         <v-col  cols="6">
                             <v-card
-                            class="mx-auto"
-                            height="200"
-                            image="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-                            max-width="200"
-                            theme="dark"
-                            title="Card title"
-                        ></v-card>
+                                class="mx-auto keyType2"
+                                height="200"
+                                image="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                                max-width="200"
+                                theme="dark"
+                                title="keyType1"
+                                @click="clickCheckout(1)"
+                            ></v-card>
                         </v-col>
                     </v-row>
                     <v-row>
-                        アラート
+                        <v-alert
+                            v-model="alertSuccess"
+                            :color="alertColor"
+                            :title="alertSuccessText"
+                            :key="renderKey"
+                            :type="alertType"
+                            class="checkoutAlert"
+
+                        ></v-alert>
+                        
                     </v-row>
                 </v-container>
               </v-window-item>
@@ -93,6 +104,17 @@
     import { ref } from "vue";
     const name = ref("World");
 
+    // 貸出アラート
+    const alertSuccess = ref(true);
+    const renderKey = ref(0);
+    let alertSuccessText = ref("貸出結果が表示されます");
+    let alertColor = ref("info");
+    let alertType = ref("info");
+
+    // tabs
+    const tab = ref(0);
+
+    // 登録
     const registName = ref("");
 
     const desserts = [
@@ -117,7 +139,35 @@
                 { title: '返却日時', value: 'return_date', align: 'end' },
     ];
 
-    // tabs
-    const tab = ref(0);
-    const text = "aaaa";
+
+    const clickCheckout = async (keytype: number) : Promise<any> => {
+        try {
+            const response = await useFetch("/api/checkout", {
+                method: 'POST',
+                body: {
+                    user: "checkouttest0001",
+                    keytype: keytype,
+                },
+                headers: {
+                    Accept: 'application/json'
+                }
+            })
+            console.log(response.data.value.message)
+            alertSuccessText = response.data.value.message;
+            alertColor = response.data.value.color;
+            alertType = response.data.value.type;
+
+            // ユーザー操作ではcomponentは更新されないのでalertの再描画処理を記述
+            renderKey.value = renderKey.value + 1; 
+            return response.data.value.message;
+            
+        } catch (err) {
+            alertSuccessText = ref("貸出失敗");
+            alertColor = ref("error");
+            alertType = ref("error");
+            renderKey.value = renderKey.value + 1; 
+            console.log("貸出失敗");
+        }
+    }
+
 </script>

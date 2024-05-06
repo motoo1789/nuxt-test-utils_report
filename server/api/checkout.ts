@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client'
 import { createApprove } from "./approve.js"
 import { findUser } from "./user.js"
-// import { approveIdRead } from "./db.js"
-const prisma = new PrismaClient()
+
+const prisma = new PrismaClient();
 
 const success = {
     message: "貸出処理完了です",
@@ -15,6 +15,17 @@ const error = {
     alertColor: "error",
     type: "error"
 }
+
+export default defineEventHandler(async (event) => {
+    console.log("サーバー側処理 : checkout")
+
+    const post = await readBody(event);
+
+    if (event.node.req.method === 'POST') 
+    {
+        return await checkout(post.user, post.keytype);
+    }
+})
 
 
 export async function checkout(user: string, key: number): Promise<any> {
@@ -40,8 +51,10 @@ export async function checkout(user: string, key: number): Promise<any> {
 
     // checkoutに貸出レコードを追加
     const createdCheckout = await createCheckout(user, createApproveResult!.id, key);
-    
+
     return createdCheckout === null ? error : success;
+
+    
 }
 
 async function createCheckout(user: string, approve: number, key: number) :  Promise<any> {
