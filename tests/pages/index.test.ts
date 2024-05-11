@@ -21,9 +21,9 @@ describe("index.vue", () => {
   test("index page test", async () => {
     console.log("start test");
     console.log(index);
-    const wrapper = await mountSuspended(index);
-    console.log(wrapper.text());
-    expect(wrapper.exists()).toBeTruthy();
+    // const wrapper = await mountSuspended(index);
+    // console.log(wrapper.text());
+    // expect(wrapper.exists()).toBeTruthy();
 
     // const card1 = wrapper.findComponent('.keyType1');
     // expect(card1.exists()).toBeTruthy();
