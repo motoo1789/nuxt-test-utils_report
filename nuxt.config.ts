@@ -6,20 +6,28 @@ export default defineNuxtConfig({
   },
   plugins: [
     '~/plugins/vuetify.ts'
+    
   ],
   build: {
     transpile: ['vuetify'],
   },
+  typescript: {
+    tsConfig: {
+      compilerOptions: {
+        types: ["vitest/globals"] // globalsのTypeScriptサポート
+      }
+    }
+  },
   modules: [
     '@nuxt/test-utils/module',
-    (_options, nuxt) => {
+    async (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
         // @ts-expect-error
         config.plugins.push(vuetify({ autoImport: true }))
       })
     },
   ],
-  vite: {
+  testUtils: {
     vue: {
       template: {
         transformAssetUrls,
